@@ -1,0 +1,12 @@
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\bin\Debug\TylerTesting.exe.config
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\bin\Debug\TylerTesting.exe
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\bin\Debug\TylerTesting.pdb
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.csprojAssemblyReference.cache
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.Form1.resources
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.Properties.Resources.resources
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.csproj.GenerateResource.cache
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.exe
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.pdb
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
+C:\Users\thern\Documents\Visual Studio_TH\TylerTesting\TylerTesting\obj\Debug\TylerTesting.csproj.CopyComplete
