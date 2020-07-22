@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UDP;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+
 
 namespace TylerTesting
 {
@@ -40,16 +43,16 @@ namespace TylerTesting
             panelIPAddress = txtIPAddress.Text;
         }
 
-        public int panelReceivePort = 27000;
-        protected void txtReceivePort_TextChanged(object sender, EventArgs e)
+        public int panelServerPort = 27000;
+        protected void txtServerPort_TextChanged(object sender, EventArgs e)
         {
-            panelReceivePort = Int32.Parse(txtReceivePort.Text);
+            panelServerPort = Int32.Parse(txtClientPort.Text);
         }
 
         public int panelClientPort = 27000;
-        protected void txtServerPort_TextChanged(object sender, EventArgs e)
+        protected void txtClientPort_TextChanged(object sender, EventArgs e)
         {
-            panelClientPort = Int32.Parse(txtServerPort.Text);
+            panelClientPort = Int32.Parse(txtClientPort.Text);
         }
 
         public string memoTXMsg = null;
@@ -60,31 +63,34 @@ namespace TylerTesting
 
 
 
-        public void TryUDP()
+        public void UDPsenddata(string IP, int port, string memoTXMsg)
         {
-            UDPSocket s = new UDPSocket();
-            s.Server(System.Net.IPAddress.Any.ToString(), panelReceivePort);
+            byte[] packetData = System.Text.ASCIIEncoding.ASCII.GetBytes(memoTXMsg);      // Packet of Data goes here
 
-           UDPSocket c = new UDPSocket();
-            c.Client(panelIPAddress, panelClientPort);
-            c.Send(memoTXMsg);
+            //string IP = "127.0.0.1";
+            //int port = 51021;
 
-            //Console.ReadKey();
+            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(IP), port);
+
+            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            client.SendTimeout = 1;
+
+            client.SendTo(packetData, ep);
 
         }
 
-        
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            UDPSocket s = new UDPSocket();
-            s.Server("127.0.0.1", 27000);
+            //UDPSocket s = new UDPSocket();
+            //s.Server("127.0.0.1", 27000);
 
-            UDPSocket c = new UDPSocket();
-            c.Client("127.0.0.1", 27000);
-            c.Send("TEST!");
+            //UDPSocket c = new UDPSocket();
+            //c.Client("127.0.0.1", 27000);
+            //c.Send("TEST!");
 
-            
+
             Console.ReadKey();
         }
 
@@ -102,7 +108,7 @@ namespace TylerTesting
         {
             if (e.KeyChar == (char)Keys.Enter)
                 {
-                TryUDP();
+                UDPsenddata(panelIPAddress, panelClientPort, memoTXMsg);
                 }
 
         }

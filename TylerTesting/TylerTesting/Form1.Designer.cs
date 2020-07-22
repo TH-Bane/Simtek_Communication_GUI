@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtServerPort = new System.Windows.Forms.TextBox();
-            this.txtReceivePort = new System.Windows.Forms.TextBox();
+            this.txtClientPort = new System.Windows.Forms.TextBox();
             this.txtIPAddress = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -65,7 +65,7 @@
             // 
             this.panel1.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.panel1.Controls.Add(this.txtServerPort);
-            this.panel1.Controls.Add(this.txtReceivePort);
+            this.panel1.Controls.Add(this.txtClientPort);
             this.panel1.Controls.Add(this.txtIPAddress);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
@@ -86,24 +86,23 @@
             // txtServerPort
             // 
             this.txtServerPort.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.txtServerPort.Location = new System.Drawing.Point(143, 166);
+            this.txtServerPort.Location = new System.Drawing.Point(143, 144);
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(100, 20);
-            this.txtServerPort.TabIndex = 12;
-            this.txtServerPort.Text = "51021";
+            this.txtServerPort.TabIndex = 14;
+            this.txtServerPort.Text = "51020";
             this.txtServerPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtServerPort.TextChanged += new System.EventHandler(this.txtServerPort_TextChanged);
             // 
-            // txtReceivePort
+            // txtClientPort
             // 
-            this.txtReceivePort.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.txtReceivePort.Location = new System.Drawing.Point(143, 144);
-            this.txtReceivePort.Name = "txtReceivePort";
-            this.txtReceivePort.Size = new System.Drawing.Size(100, 20);
-            this.txtReceivePort.TabIndex = 11;
-            this.txtReceivePort.Text = "51020";
-            this.txtReceivePort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtReceivePort.TextChanged += new System.EventHandler(this.txtReceivePort_TextChanged);
+            this.txtClientPort.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.txtClientPort.Location = new System.Drawing.Point(143, 166);
+            this.txtClientPort.Name = "txtClientPort";
+            this.txtClientPort.Size = new System.Drawing.Size(100, 20);
+            this.txtClientPort.TabIndex = 12;
+            this.txtClientPort.Text = "51021";
+            this.txtClientPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtClientPort.TextChanged += new System.EventHandler(this.txtServerPort_TextChanged);
             // 
             // txtIPAddress
             // 
@@ -132,9 +131,9 @@
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
             this.label2.Location = new System.Drawing.Point(5, 147);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(102, 13);
+            this.label2.Size = new System.Drawing.Size(93, 13);
             this.label2.TabIndex = 8;
-            this.label2.Text = "Panel Receive Port:";
+            this.label2.Text = "Panel Server Port:";
             // 
             // label1
             // 
@@ -367,8 +366,7 @@
         private System.Windows.Forms.Label lblTestSoftware;
         private System.Windows.Forms.Label lblTestSoftwareValue;
         private System.Windows.Forms.Label lblRevisionValue;
-        private System.Windows.Forms.TextBox txtServerPort;
-        private System.Windows.Forms.TextBox txtReceivePort;
+        private System.Windows.Forms.TextBox txtClientPort;
         private System.Windows.Forms.TextBox txtIPAddress;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
@@ -378,6 +376,7 @@
         private System.Windows.Forms.RichTextBox MemoRx;
         private System.Windows.Forms.RichTextBox MemoTx;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox txtServerPort;
     }
 }
 
