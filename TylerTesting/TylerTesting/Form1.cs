@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -61,7 +61,30 @@ namespace TylerTesting
             memoTXMsg = MemoTx.Text;
         }
 
+        public byte[] convertMessage2Hex(string inputString)
+        {
+            //string inputString = "02 7C 30 30 30 45 30 34 43 37 34 43 30 30 30 31 45 42 7C 03";
+            inputString = inputString.Replace("\r\n", "");                                                         // remove return and new line characters
+            inputString = inputString.Replace("\n", "");                                                           // remove return new line characters
 
+            if (!Char.IsWhiteSpace(inputString,2))
+            {
+                for (int i = 2; i <= inputString.Length; i += 2)
+                {
+                    inputString = inputString.Insert(i, " ");
+                    i++;
+                }
+            }
+
+            inputString = inputString.Trim();                                                                                    // remove leading or trailing whitespace
+
+            List<byte> outputValue = new List<byte>();
+            foreach (string element in inputString.Split(' ')) // for each group of characters seperated by a space
+            {
+                outputValue.Add(Convert.ToByte(element, 16));
+            }
+            return outputValue.ToArray();
+        }
 
         public void UDPsenddata(string IP, int port, string memoTXMsg)
         {
