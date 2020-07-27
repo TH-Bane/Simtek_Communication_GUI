@@ -88,17 +88,18 @@ namespace TylerTesting
 
         public void UDPsenddata(string IP, int port, string memoTXMsg)
         {
-            byte[] packetData = System.Text.ASCIIEncoding.ASCII.GetBytes(memoTXMsg);      // Packet of Data goes here
+            byte[] packetData = convertMessage2Hex(memoTXMsg);      // Packet of Data goes here
+
 
             //string IP = "127.0.0.1";
             //int port = 51021;
 
-            IPEndPoint ep = new IPEndPoint(IPAddress.Parse(IP), port);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IP), port);
 
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             client.SendTimeout = 1;
 
-            client.SendTo(packetData, ep);
+            client.SendTo(packetData, endPoint);
 
         }
 
