@@ -16,9 +16,9 @@ C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\bin\Deb
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\bin\Debug\Microsoft.VisualBasic.PowerPacks.xml
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.csprojAssemblyReference.cache
-C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.Form1.resources
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.Properties.Resources.resources
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.csproj.GenerateResource.cache
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.csproj.CopyComplete
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.exe
 C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.pdb
+C:\_SWork\Local Repos\Simtek_Communication_GUI\TylerTesting\TylerTesting\obj\Debug\TylerTesting.Form1.resources

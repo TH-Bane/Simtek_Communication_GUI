@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-
+using System.Threading;
 
 namespace TylerTesting
 {
@@ -46,7 +46,7 @@ namespace TylerTesting
         public int panelServerPort = 27000;
         protected void txtServerPort_TextChanged(object sender, EventArgs e)
         {
-            panelServerPort = Int32.Parse(txtClientPort.Text);
+            panelServerPort = Int32.Parse(txtServerPort.Text);
         }
 
         public int panelClientPort = 27000;
@@ -64,6 +64,7 @@ namespace TylerTesting
         public byte[] convertMessage2Hex(string inputString)
         {
             //string inputString = "02 7C 30 30 30 45 30 34 43 37 34 43 30 30 30 31 45 42 7C 03";
+            // 02 7C 30 30 30 45 30 34 43 37 34 44 30 30 30 39 46 34 7C 03                                            get all message
             inputString = inputString.Replace("\r\n", "");                                                         // remove return and new line characters
             inputString = inputString.Replace("\n", "");                                                           // remove return new line characters
 
@@ -86,22 +87,129 @@ namespace TylerTesting
             return outputValue.ToArray();
         }
 
+        IPEndPoint m_endPoint = null;
+        IPEndPoint endPoint
+        {
+            get
+            {
+                if (m_endPoint == null)
+                    m_endPoint = new IPEndPoint(IPAddress.Parse(panelIPAddress), panelClientPort);
+
+                return m_endPoint;
+            }
+        }
+        private Socket mClient = null;
+        public Socket client
+        {
+            get
+            {
+                if (mClient == null)
+                    mClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+                return mClient;
+            }
+            set
+            {
+                if (mClient != null)
+                {
+                    // you are assigning a socket, and one is already assigned
+                    // use this block of code to close the old socket (mClient) if needed, before assigning the new one
+                }
+                mClient = value;
+            }
+        }
         public void UDPsenddata(string IP, int port, string memoTXMsg)
         {
+            panelClientPort = Int32.Parse(txtClientPort.Text);
+            //panelServerPort = Int32.Parse(txtServerPort.Text);
+
             byte[] packetData = convertMessage2Hex(memoTXMsg);      // Packet of Data goes here
-
-
-            //string IP = "127.0.0.1";
-            //int port = 51021;
-
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(IP), port);
-
-            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             client.SendTimeout = 1;
 
             client.SendTo(packetData, endPoint);
 
+            UDPreceivedata();
+            
+
         }
+
+        private Socket mServer = null;
+        public Socket server
+        {
+            get
+            {
+                if (mServer == null)
+                    mServer = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+                return mServer;
+            }
+            set
+            {
+                if (mServer != null)
+                {
+                    // you are assigning a socket, and one is already assigned
+                    // use this block of code to close the old socket (mClient) if needed, before assigning the new one
+                }
+                mServer = value;
+            }
+        }
+
+        private static object ReadLock = new object();
+        private int received = 0;
+        public int Received
+        {
+            get
+            {
+                int result = 0;
+                lock(ReadLock)
+                {
+                    result = received;
+                }
+                return result;
+            }
+            set
+            {
+                lock(ReadLock)
+                {
+                    received = value;
+                }
+            }
+        }
+
+        public void UDPreceivedata()
+        {
+            byte[] data = new byte[1024];
+
+            panelServerPort = Int32.Parse(txtServerPort.Text);
+
+            IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, 51021);
+            if (!server.IsBound)
+            {
+                server.Bind(endpoint);
+            } 
+
+            //trying this
+            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 51021); //IPAddress.Any
+            EndPoint tmpRemote = (EndPoint)sender;
+
+            AutoResetEvent flag = new AutoResetEvent(false);
+            Thread th = new Thread(() =>
+            {
+                //Your Socket begins here...
+                Received = server.ReceiveFrom(data, ref tmpRemote);
+                flag.Set();   //Release the AutoResetEvent
+            });
+            th.IsBackground = true;
+            th.Start();
+            //Block the current thread for 5 seconds
+            flag.WaitOne(500);
+
+            MemoRx.Text = Encoding.ASCII.GetString(data, 0, Received);
+            //byte[] buffer = Encoding.UTF8.GetBytes(MemoRx.Text);
+            //string converted = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+            //MemoRx.Text = converted;
+        }
+
 
 
 
@@ -135,6 +243,11 @@ namespace TylerTesting
                 UDPsenddata(panelIPAddress, panelClientPort, memoTXMsg);
                 }
 
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            //UDPreceivedata();
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.txtServerPort = new System.Windows.Forms.TextBox();
@@ -53,6 +54,7 @@
             this.MemoRx = new System.Windows.Forms.RichTextBox();
             this.MemoTx = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureSimtekLogo)).BeginInit();
@@ -89,9 +91,10 @@
             this.txtServerPort.Location = new System.Drawing.Point(143, 144);
             this.txtServerPort.Name = "txtServerPort";
             this.txtServerPort.Size = new System.Drawing.Size(100, 20);
-            this.txtServerPort.TabIndex = 14;
+            this.txtServerPort.TabIndex = 11;
             this.txtServerPort.Text = "51020";
             this.txtServerPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtServerPort.TextChanged += new System.EventHandler(this.txtServerPort_TextChanged);
             // 
             // txtClientPort
             // 
@@ -100,9 +103,9 @@
             this.txtClientPort.Name = "txtClientPort";
             this.txtClientPort.Size = new System.Drawing.Size(100, 20);
             this.txtClientPort.TabIndex = 12;
-            this.txtClientPort.Text = "51021";
+            this.txtClientPort.Text = "51020";
             this.txtClientPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.txtClientPort.TextChanged += new System.EventHandler(this.txtServerPort_TextChanged);
+            this.txtClientPort.TextChanged += new System.EventHandler(this.txtClientPort_TextChanged);
             // 
             // txtIPAddress
             // 
@@ -323,6 +326,11 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -377,6 +385,7 @@
         private System.Windows.Forms.RichTextBox MemoTx;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox txtServerPort;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
