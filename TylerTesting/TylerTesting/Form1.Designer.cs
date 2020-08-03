@@ -103,7 +103,7 @@
             this.txtClientPort.Name = "txtClientPort";
             this.txtClientPort.Size = new System.Drawing.Size(100, 20);
             this.txtClientPort.TabIndex = 12;
-            this.txtClientPort.Text = "51020";
+            this.txtClientPort.Text = "51021";
             this.txtClientPort.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtClientPort.TextChanged += new System.EventHandler(this.txtClientPort_TextChanged);
             // 

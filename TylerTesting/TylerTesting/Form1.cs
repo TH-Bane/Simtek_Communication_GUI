@@ -93,7 +93,7 @@ namespace TylerTesting
             get
             {
                 if (m_endPoint == null)
-                    m_endPoint = new IPEndPoint(IPAddress.Parse(panelIPAddress), panelClientPort);
+                    m_endPoint = new IPEndPoint(IPAddress.Parse(panelIPAddress), panelServerPort);
 
                 return m_endPoint;
             }
@@ -121,7 +121,7 @@ namespace TylerTesting
         public void UDPsenddata(string IP, int port, string memoTXMsg)
         {
             panelClientPort = Int32.Parse(txtClientPort.Text);
-            //panelServerPort = Int32.Parse(txtServerPort.Text);
+            panelServerPort = Int32.Parse(txtServerPort.Text);
 
             byte[] packetData = convertMessage2Hex(memoTXMsg);      // Packet of Data goes here
             client.SendTimeout = 1;
@@ -180,16 +180,16 @@ namespace TylerTesting
         {
             byte[] data = new byte[1024];
 
-            panelServerPort = Int32.Parse(txtServerPort.Text);
+            panelClientPort = Int32.Parse(txtClientPort.Text);
 
-            IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, 51021);
+            IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, panelClientPort);
             if (!server.IsBound)
             {
                 server.Bind(endpoint);
             } 
 
             //trying this
-            IPEndPoint sender = new IPEndPoint(IPAddress.Any, 51021); //IPAddress.Any
+            IPEndPoint sender = new IPEndPoint(IPAddress.Any, panelClientPort);
             EndPoint tmpRemote = (EndPoint)sender;
 
             AutoResetEvent flag = new AutoResetEvent(false);
@@ -201,13 +201,9 @@ namespace TylerTesting
             });
             th.IsBackground = true;
             th.Start();
-            //Block the current thread for 5 seconds
-            flag.WaitOne(500);
+            flag.WaitOne(500); //Block the current thread for 5 seconds
 
             MemoRx.Text = Encoding.ASCII.GetString(data, 0, Received);
-            //byte[] buffer = Encoding.UTF8.GetBytes(MemoRx.Text);
-            //string converted = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-            //MemoRx.Text = converted;
         }
 
 
@@ -240,7 +236,7 @@ namespace TylerTesting
         {
             if (e.KeyChar == (char)Keys.Enter)
                 {
-                UDPsenddata(panelIPAddress, panelClientPort, memoTXMsg);
+                UDPsenddata(panelIPAddress, panelServerPort, memoTXMsg);
                 }
 
         }
