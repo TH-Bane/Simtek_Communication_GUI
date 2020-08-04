@@ -53,7 +53,6 @@
             this.pageDimming = new System.Windows.Forms.TabPage();
             this.MemoRx = new System.Windows.Forms.RichTextBox();
             this.MemoTx = new System.Windows.Forms.RichTextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -316,16 +315,6 @@
             this.MemoTx.Enter += new System.EventHandler(this.MemoTx_Enter);
             this.MemoTx.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MemoTx_KeyPress);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(473, 183);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // timer1
             // 
             this.timer1.Enabled = true;
@@ -337,7 +326,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.ClientSize = new System.Drawing.Size(835, 477);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.MemoTx);
             this.Controls.Add(this.MemoRx);
             this.Controls.Add(this.tabControlSimtek);
@@ -383,7 +371,6 @@
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape1;
         private System.Windows.Forms.RichTextBox MemoRx;
         private System.Windows.Forms.RichTextBox MemoTx;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox txtServerPort;
         private System.Windows.Forms.Timer timer1;
     }

@@ -60,16 +60,21 @@ namespace TylerTesting
         {
             memoTXMsg = MemoTx.Text;
         }
-
+        //----------------------------------------------------------------------------------------
+        // name    : convertMessage2Hex(string inputString)                                       //
+        // purpose : remove extra characters, corrects for whitespace,                            //
+        //           return a byte with string input converted to hex string                      //
+        // params  : a string input                                                               //
+        // returns : byte[] of string converted to hex values                                     //
+        // notes   : still needs error handling                                                   //
+        //----------------------------------------------------------------------------------------
         public byte[] convertMessage2Hex(string inputString)
         {
-            //string inputString = "02 7C 30 30 30 45 30 34 43 37 34 43 30 30 30 31 45 42 7C 03";
-            // 02 7C 30 30 30 45 30 34 43 37 34 44 30 30 30 39 46 34 7C 03                                            get all message
             inputString = inputString.Replace("\r\n", "");                                                         // remove return and new line characters
             inputString = inputString.Replace("\n", "");                                                           // remove return new line characters
 
-            if (!Char.IsWhiteSpace(inputString,2))
-            {
+            if (!Char.IsWhiteSpace(inputString,2))                                                                 // adds white space every 2 characters
+            {                                                                                                      // this actually keeps formatting the same
                 for (int i = 2; i <= inputString.Length; i += 2)
                 {
                     inputString = inputString.Insert(i, " ");
@@ -77,12 +82,12 @@ namespace TylerTesting
                 }
             }
 
-            inputString = inputString.Trim();                                                                                    // remove leading or trailing whitespace
+            inputString = inputString.Trim();                                                                      // remove leading or trailing whitespace
 
             List<byte> outputValue = new List<byte>();
-            foreach (string element in inputString.Split(' ')) // for each group of characters seperated by a space
+            foreach (string element in inputString.Split(' '))                                                     // for each group of characters seperated by a space
             {
-                outputValue.Add(Convert.ToByte(element, 16));
+                outputValue.Add(Convert.ToByte(element, 16));                                                      // Add the converted hex byte to outputValue
             }
             return outputValue.ToArray();
         }
@@ -92,8 +97,8 @@ namespace TylerTesting
         {
             get
             {
-                if (m_endPoint == null)
-                    m_endPoint = new IPEndPoint(IPAddress.Parse(panelIPAddress), panelServerPort);
+                if (m_endPoint == null)                                                                             // check to make sure an endpoint hasn't already been created
+                    m_endPoint = new IPEndPoint(IPAddress.Parse(panelIPAddress), panelServerPort);                  // create endpoint with a specified address at a specified port
 
                 return m_endPoint;
             }
@@ -104,7 +109,7 @@ namespace TylerTesting
             get
             {
                 if (mClient == null)
-                    mClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    mClient = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);           // Initialize a new instance of a socket
 
                 return mClient;
             }
@@ -120,13 +125,12 @@ namespace TylerTesting
         }
         public void UDPsenddata(string IP, int port, string memoTXMsg)
         {
-            panelClientPort = Int32.Parse(txtClientPort.Text);
-            panelServerPort = Int32.Parse(txtServerPort.Text);
+            panelServerPort = Int32.Parse(txtServerPort.Text);                                                      // ensure that panelServerPort has the port from the user
 
-            byte[] packetData = convertMessage2Hex(memoTXMsg);      // Packet of Data goes here
-            client.SendTimeout = 1;
+            byte[] packetData = convertMessage2Hex(memoTXMsg);  // Packet of Data goes here                         // convert packet
+            client.SendTimeout = 1;                                                                                 // low timeout so you don't have to wait forever for control back after trying to send a packet
 
-            client.SendTo(packetData, endPoint);
+            client.SendTo(packetData, endPoint);                                                                    // send out to proper IP (or instrument in our case)
 
             UDPreceivedata();
             
@@ -139,7 +143,7 @@ namespace TylerTesting
             get
             {
                 if (mServer == null)
-                    mServer = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    mServer = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);           // Initialize a new instance of a socket
 
                 return mServer;
             }
@@ -154,6 +158,8 @@ namespace TylerTesting
             }
         }
 
+
+        //
         private static object ReadLock = new object();
         private int received = 0;
         public int Received
@@ -179,6 +185,8 @@ namespace TylerTesting
         public void UDPreceivedata()
         {
             byte[] data = new byte[1024];
+            byte[] dataBuffer = new byte[1024];
+            string stringBuffer = "";
 
             panelClientPort = Int32.Parse(txtClientPort.Text);
 
@@ -188,7 +196,6 @@ namespace TylerTesting
                 server.Bind(endpoint);
             } 
 
-            //trying this
             IPEndPoint sender = new IPEndPoint(IPAddress.Any, panelClientPort);
             EndPoint tmpRemote = (EndPoint)sender;
 
@@ -196,31 +203,25 @@ namespace TylerTesting
             Thread th = new Thread(() =>
             {
                 //Your Socket begins here...
-                Received = server.ReceiveFrom(data, ref tmpRemote);
+                if (Received >= 0)                                                                                  // make sure nothing strange happens to Received
+                {
+                    Received = server.ReceiveFrom(data, ref tmpRemote);                                             // Receives datagram into the data buffer and stores endpoint
+                }
                 flag.Set();   //Release the AutoResetEvent
             });
-            th.IsBackground = true;
+            th.IsBackground = true;                                                                                  
             th.Start();
-            flag.WaitOne(500); //Block the current thread for 5 seconds
+            flag.WaitOne(500); //Block the current thread for .5 seconds
 
-            MemoRx.Text = Encoding.ASCII.GetString(data, 0, Received);
+            stringBuffer = Encoding.ASCII.GetString(data, 0, Received);                                             // place Received data into string Buffer
+            dataBuffer = Encoding.Default.GetBytes(stringBuffer);                                                   // convert Received data to hex bytes and place into data buffer
+            var hexString = BitConverter.ToString(dataBuffer);                                                      // convert to a string
+            hexString = hexString.Replace("-", " ");
+            MemoRx.AppendText("\n\r");
+            MemoRx.AppendText(hexString);                                                                           // output to MemoRx.Text
+            MemoRx.ScrollToCaret();                                                                                 // ensure most recent data is always shown
         }
 
-
-
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //UDPSocket s = new UDPSocket();
-            //s.Server("127.0.0.1", 27000);
-
-            //UDPSocket c = new UDPSocket();
-            //c.Client("127.0.0.1", 27000);
-            //c.Send("TEST!");
-
-
-            Console.ReadKey();
-        }
 
         private void MemoTx_Enter(object sender, EventArgs e)
         {
