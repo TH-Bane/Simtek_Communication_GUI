@@ -182,11 +182,14 @@ namespace TylerTesting
             }
         }
 
+        int RxCounter = 0;
+        int RxCounterLimit = 500;
         public void UDPreceivedata()
         {
             byte[] data = new byte[1024];
             byte[] dataBuffer = new byte[1024];
             string stringBuffer = "";
+            
 
             panelClientPort = Int32.Parse(txtClientPort.Text);
 
@@ -217,9 +220,24 @@ namespace TylerTesting
             dataBuffer = Encoding.Default.GetBytes(stringBuffer);                                                   // convert Received data to hex bytes and place into data buffer
             var hexString = BitConverter.ToString(dataBuffer);                                                      // convert to a string
             hexString = hexString.Replace("-", " ");
-            MemoRx.AppendText("\n\r");
-            MemoRx.AppendText(hexString);                                                                           // output to MemoRx.Text
-            MemoRx.ScrollToCaret();                                                                                 // ensure most recent data is always shown
+
+            if(RxCounter <= RxCounterLimit)
+            {
+                MemoRx.AppendText("\n\r");
+                MemoRx.AppendText("RX " + RxCounter.ToString("D3") + " -> ");                                           // formatting to RxCount to 3 places
+                MemoRx.AppendText(hexString);                                                                           // output to MemoRx.Text
+                MemoRx.ScrollToCaret();                                                                                 // ensure most recent data is always shown
+                RxCounter++;
+            }
+            else
+            {
+                RxCounter = 0;
+                MemoRx.AppendText("\n\r");
+                MemoRx.AppendText("RX " + RxCounter.ToString("D3") + " -> ");                                           // formatting to RxCount to 3 places
+                MemoRx.AppendText(hexString);                                                                           // output to MemoRx.Text
+                MemoRx.ScrollToCaret();                                                                                 // ensure most recent data is always shown
+                RxCounter++;
+            }
         }
 
 
